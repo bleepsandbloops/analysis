@@ -15,12 +15,10 @@
 #include <fstream>
 #include <cstdlib>
 #include <algorithm>
-
 #include "../include/SimpleFileParser.h"
 #include "../include/MT_Edge_Time_Measurement.H"
 #include "../include/RPCDataAnalysis.h"
 #include "../include/ToString.h"
-
 
 //:::::::::::::::
 //:: NAMESPACE ::
@@ -37,8 +35,7 @@ using namespace std;
 RPCDataAnalysis::RPCDataAnalysis(const string & input_file_name,
                                  const string & output_file_name,
                                  const string & config_file_name,
-				 const string & job_options_file
-				 ) {
+                                 const std::string & job_options_file) {
 
     readCablingFile(config_file_name);
     readJobOptionsFile(job_options_file);
@@ -46,23 +43,6 @@ RPCDataAnalysis::RPCDataAnalysis(const string & input_file_name,
     doROOTStuff(output_file_name);
 
     m_hit = std::vector< std::vector<RPCHit *> >(3);
-   
-    c1 = new TCanvas("c1","Hits per strip",400,600);
-    //c1->SetCanvasSize(1500,1500);
-    //c1->SetWindowSize(500,500);
-    //c2 = new TCanvas("c2","Pulse length");//Pulse length
-    //c3 = new TCanvas("c3","Hit Time Comparison");//Hit Time Comparison
-  
-    // h1 = new TH1I("h1","channels",16,0,16);
-    // h2 = new TH1F("h2","time over threshold",180,1,181);
-    // h3 = new TH2I("h3","channels per event",16,0,16,6,0,6);
-    // h4 = new TH2F("h4","Time over threshold for different layers",180,1,181,6,0,6);
-    // h5 = new TH1I("h5","hits on neighboring strips",16,0,16);
-    // //h6 = new TH2I("h6","hits on neighboring layers",16,0,16,6,0,6);
-    // h7 = new TH2I("h7","Hit time > 1000",16,0,16,6,0,6);
-    // h8 = new TH2I("h8","Hit time < 1000",16,0,16,6,0,6);
-    // h9 = new TH1I("h9","Strip popularity eta",16,0,16); 
-    // h10 = new TH1I("h10","Strip popularity phi",16,0,16);
 
 }
 
@@ -83,7 +63,6 @@ void RPCDataAnalysis::runAnalysis(Long64_t first_event,
     Long64_t last_evnt(last_event);
 
     map<unsigned int, vector<MT_Edge_Time_Measurement> > edges;
-    
 
     unsigned int singlet_ID;
     unsigned int strip_ID;
@@ -153,19 +132,19 @@ void RPCDataAnalysis::runAnalysis(Long64_t first_event,
                 singlet_ID = m_RPC_layer[it->second[edge].channel()];
                 strip_ID = m_strip_number[it->second[edge].channel()];
                 strip_type = m_strip_type[it->second[edge].channel()];
-     
-		m_hit[singlet_ID].push_back(new RPCHit(singlet_ID,
+                m_hit[singlet_ID].push_back(new RPCHit(singlet_ID,
                                            strip_ID,
                                            strip_type,
                                            hit_leading_egde_time,
                                            hit_trailing_egde_time));
-	       
-		static ofstream outfile("debug.txt");
+
+                static ofstream outfile("debug.txt");
                 outfile << it->second[edge].channel() << "\t"
                         << m_strip_type[it->second[edge].channel()] << endl;
             }
         }
 
+// analyse the hits //
         analyseHits();
 
     }
@@ -174,23 +153,6 @@ void RPCDataAnalysis::runAnalysis(Long64_t first_event,
 // CLOSE ROOT OUTPUT FILE //
 ////////////////////////////
 
-    //c1->SetCanvasSize(1500,1500);    
-    c1->Divide(2,3,0.01,0.01,0);
-      
-    for(int a = 0; a < 3; a++){
-      int etapad = 2*a;
-      int phipad = 2*a+1;
-
-      c1->cd(etapad);
-      h_hits_per_strip_eta[a]->Draw();
-
-      c1->cd(phipad);
-      h_hits_per_strip_phi[a]->Draw();
-      //c1->Update();
-    }
-    c1->Modified();
-  
-    
     p_outfile->Write();
     p_outfile->Close();
 
@@ -264,9 +226,9 @@ void RPCDataAnalysis::readCablingFile(const string & config_file_name) {
 void RPCDataAnalysis::readJobOptionsFile(
                                 const std::string & job_options_file_name) {
 
-//  //////////////////////////////
-// // OPEN THE JOB OPTIONS FILE //
-// ///////////////////////////////
+ //////////////////////////////
+// OPEN THE JOB OPTIONS FILE //
+///////////////////////////////
 
     ifstream infile(job_options_file_name.c_str());
     if (infile.fail()) {
@@ -276,9 +238,9 @@ void RPCDataAnalysis::readJobOptionsFile(
         exit(1);
     }
 
-// ////////////////////////////////
-// // PARSE THE JOB OPTIONS FILE //
-// ////////////////////////////////
+////////////////////////////////
+// PARSE THE JOB OPTIONS FILE //
+////////////////////////////////
 
     SimpleFileParser parser;
     std::vector<const JobOption *> job_options(parser.parse(infile));
@@ -341,75 +303,56 @@ void RPCDataAnalysis::readJobOptionsFile(
 
 void RPCDataAnalysis::doROOTStuff(const string & output_file_name) {
 
-  //auxiliaries 
-  ToString tostring;
-  string name;
-  string title;
-  // 
+// auxiliaries //
+    ToString tostring;
+    string name;
+
+// ROOT file //
     p_outfile = new TFile(output_file_name.c_str(), "RECREATE");
 
+// histograms //
+    h_cluster_size_eta = vector<TH1F *>(3);
+    h_cluster_size_phi = vector<TH1F *>(3);
+    h_hit_time_eta = vector<TH1F *>(3);
+    h_hit_time_phi = vector<TH1F *>(3);
+    h_hit_ToT_eta = vector<TH1F *>(3);
+    h_hit_ToT_phi = vector<TH1F *>(3);
 
-//::::::::::::::::::::::::::::::::::::::::::::::
-//:: Declare some vectors of three histograms ::
-//:::::::::::::::::::::::::::::::::::::::::::::: 
+    for (unsigned int k=0; k<3; k++) {
+        name = "h_cluster_size_eta_"+tostring(k);
+        h_cluster_size_eta[k] = new TH1F(name.c_str(), "", 10, -0.5, 9.5);
+            h_cluster_size_eta[k]->SetXTitle("Cluster size");
+            h_cluster_size_eta[k]->SetYTitle("Counts");
 
+        name = "h_cluster_size_phi_"+tostring(k);
+        h_cluster_size_phi[k] = new TH1F(name.c_str(), "", 10, -0.5, 9.5);
+            h_cluster_size_phi[k]->SetXTitle("Cluster size");
+            h_cluster_size_phi[k]->SetYTitle("Counts");
 
-//cuts will be imposed using the vectors:
-    double m_t_min_eta[3];
-    double m_t_max_eta[3];
-    double m_t_min_phi[3];
-    double m_t_max_phi[3];
+        name = "h_hit_time_eta_"+tostring(k);
+        h_hit_time_eta[k] = new TH1F(name.c_str(), "", 1011, -10.5, 1000.5);
+            h_hit_time_eta[k]->SetXTitle("Hit time [ns]");
+            h_hit_time_eta[k]->SetYTitle("dn/dt [1/ns]");
 
-    
-  //TH1F: Time over threshold AKA pulse length (cut) (h2, h4,h7,h8)
-    //h_tot_eta[k]= vector<TH1F *>(3);
-    //h_tot_phi[k]= vector<TH1F *>(3);
+        name = "h_hit_time_phi_"+tostring(k);
+        h_hit_time_phi[k] = new TH1F(name.c_str(), "", 1011, -10.5, 1000.5);
+            h_hit_time_phi[k]->SetXTitle("Hit time [ns]");
+            h_hit_time_phi[k]->SetYTitle("dn/dt [1/ns]");
 
-  //TH1I: popularity of strips (cut) (h1,h3,9,10)
-    h_hits_per_strip_eta = std::vector<TH1F *>(3);
-    h_hits_per_strip_phi = std::vector<TH1F *>(3);
+        name = "h_hit_ToT_eta_"+tostring(k);
+        h_hit_ToT_eta[k] = new TH1F(name.c_str(), "", 1011, -10.5, 1000.5);
+            h_hit_ToT_eta[k]->SetXTitle("Time over threshold [ns]");
+            h_hit_ToT_eta[k]->SetYTitle("dn/dt [1/ns]");
 
-    
-    //TH1F: efficiency of strips (cut) (based on h1/h3) 
-    //h_strip_eff_eta[k]= vector<TH1F *>(3);
-    //h_strip_eff_phi[k]= vector<TH1F *>(3);
+        name = "h_hit_ToT_phi_"+tostring(k);
+        h_hit_ToT_phi[k] = new TH1F(name.c_str(), "", 1011, -10.5, 1000.5);
+            h_hit_ToT_phi[k]->SetXTitle("Time over threshold [ns]");
+            h_hit_ToT_phi[k]->SetYTitle("dn/dt [1/ns]");
+    }
 
-    //TH1F: cluster size (cut) (BASED ON h5)
-    //h_cluster_size[k]= vector<TH1F *>(3);
-    //h_cluster_size[k]= vector<TH1F *>(3);
+    return;
 
-
-
-//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-//:: Now declare the histograms contained in the vectors ::
-//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  
-  for(unsigned int k=0; k<3; k++){
-
-    
-    // name = "h_tot_eta_"+tostring(k);
-    // h_hits_per_strip_eta[k] = new TH1F(name.c_str(),"Time over threshold",180,1,181);
-    // h_hits_per_strip_eta[k]->SetXTitle("Strip");
-    // h_hits_per_strip_eta[k]->SetYTitle("Counts");
-
-    name = "h_hits_per_strip_eta_"+tostring(k);
-    title = "Counts per Strip, eta singlet "+tostring(k+1);
-    h_hits_per_strip_eta[k] = new TH1F(name.c_str(),title.c_str(),16,0,16);
-    h_hits_per_strip_eta[k]->SetXTitle("Strip");
-    h_hits_per_strip_eta[k]->SetYTitle("Counts");
-
-    name = "h_hits_per_strip_phi_"+tostring(k);
-    title = "Counts per Strip, phi singlet "+tostring(k+1);
-    h_hits_per_strip_phi[k] = new TH1F(name.c_str(),title.c_str(),16,0,16);
-    h_hits_per_strip_phi[k]->SetXTitle("Strip");
-    h_hits_per_strip_phi[k]->SetYTitle("Counts");
-    
-
-  }
-
-  return;
 }
-
 
 //*****************************************************************************
 
@@ -418,166 +361,8 @@ void RPCDataAnalysis::doROOTStuff(const string & output_file_name) {
 //::::::::::::::::::::::::
 
 void RPCDataAnalysis::analyseHits(void) {
- 
- 
-//////////////////////////
-// STRIP COUNT  AND TOT //
-//////////////////////////
 
-  for (unsigned int s=0; s<3; s++){
-
-    for (unsigned int h=0; h<m_hit[s].size();h++){
-
-///////////////////
-// Get the cuts  //
-///////////////////
-
-
-      Long64_t tot = m_hit[s][h]->getTimeOverThreshold();
-      Long64_t let = m_hit[s][h]->getHitTime();//Leading edge time
-      Long64_t tet = let + tot;//Trailing edge time
-
-      if(tot != 0){
-	if(m_hit[s][h]->isEtaStrip()){
-	  if(let > m_t_min_eta[s] && tet < m_t_max_eta[s]){
-	    h_hits_per_strip_eta[s]->Fill(m_hit[s][h]->getStripID(), 1.0);
-	    //other histos fillable here
-	  }
-	
-	}
-	else{
-	  if(let > m_t_min_phi[s] && tet < m_t_max_phi[s]){
-	    h_hits_per_strip_phi[s]->Fill(m_hit[s][h]->getStripID(), 1.0);
-	    //other histos fillable here
-	  }
-	}
-     
-      }
-    }
-
-  }
-
-  // m_t_min_eta
-//////////////////////
-// STRIP EFFICIENCY //
-//////////////////////
-
-//   counts_eta_strips = new std::vector< std::vector< int >(16)>(3);
-//   counts_phi_strips = new std::vector< std::vector< int >(16)>(3);
-//     //CLEAR V AFTER EVERY ROUND.... 
-
-//  for (unsigned int s=0; s<3; s++){
-
-//     for (unsigned int h=0; h<m_hit[s].size();h++){
-//       // if(m_hit[s][h]->getHitTime()>0 && m_hit[s][h] < 1500){
-//       // if(m_hit[s][h]->getTimeOverThreshold() != 0){
-
-//       if(m_hit[s][h]->isEtaStrip()){
-// 	*counts_eta_strips[s][h] += 1;
-//       }
-//       else{
-// 	*counts_phi_strips[s][h] += 1;
-//       }
-
-//       //  }
-//       // }
-//     }
-
-//   }
-
-// h_strip_eff_eta[s]->Fill(efficiency, 1.0);
-// h_strip_eff_phi[s]->Fill(efficiency, 1.0);
-
-
-//////////////////
-// CLUSTER SIZE //
-//////////////////
-
-//Things that are needed for the histograms:
-
-//sortable & comparable vector of the strips that have been hit, separated in respective eta/phi and k groups. 
-//remember the hit time in order to be able to do the cuts. 
-
-
-//efficiency = perfect / number of times hit.
-//figure out, for each individual strip, how many pulses it had, then divide by the total number of events. EG if it was actuvated 50% of the time.
-
-//ability to sort the strip vector into ascneding order and check if neighboring strips where hit
-//increment a counter for every hit strip, abort when the next stirp was not hit. 
-
-  
-//SOME TEMPORARY VARIABLES & CONTAINERS FOR HISTOGRAM FILLING
-      //int strip = m_hit[s][h]->getStripID(); 
-      //float tot = m_hit[s][h]->getTimeOverThreshold();
-
-    //	if(m_hit[s][h]->isEtaStrip()){
-    //	  orientation=0;
-	  //  eta[s]->push_back(strip);//h6
-    //	}
-	// else{
-	//   orientation = 1;
-	//   //  phi[s]->push_back(strip);//h6
-	// };
-
-	// unsigned int singlet = m_hit[s][h]->getSingleID();
-	// v->push_back(strip);
-    
-//FILL HISTOGRAM 5
-	// if (!v->empty()){
-	//   std::sort(v->begin(), v->end());//sort in ascending order
-	//   vector<int>::iterator it;
-	//   for (it = v->begin(); it != v->end(); ++it){
-	//     if(((it != v->end()) && (*(it+1) - *it == 1)) \
-	//       || ((it != v->begin()) && (*it - *(it-1) == 1))){ 
-	//       h5->Fill(*it);}
-	//   }
-	// }
-
-  
-  
-    return;
-
-}
-
-
-
-
-//FILL HISTOGRAM 6 
-  //   eta = new std::vector< vector< int > * >;//h6
-  //   phi = new std::vector< vector< int > * >;//h6
-  //   vector <int> row;//INSTEAD OF ROW, CAST s INTO TYPE str AND CALL IT THAT
-    
-  // for (unsigned int s=0; s<3; s++){
-    
-  //   for (unsigned int h=0; h<m_hit[s].size(); h++){
-      
-  //     int strip = m_hit[s][h]->getStripID(); //from 0-15
-  //     if(m_hit[s][h]->isEtaStrip
-  // 	 }
-  //   }
-  //   eta->push_back(row);//h6
-  //   eta->at(row).push_back(strip);//h6
-  //   phi->push_back(s)
-  //   phi->at(row).push_back(strip);//h6
-  // }
-  
-  // HISTOGRAM 6: to check for neighboring singlet hits in the same event,
-  //get a similar sorted vector. but this time it should be a 3D vector of vectors.
-  //Then you can compare the numbers in each singlet and see if there are any that
-  //are only [-1,1] awayfrom each other.
-  //HISTOGRAM 6: do a new for loop to fill the vectors
-
-
-
-	  // get the ones with isetastrip
-	  // get the strip IDs
-	  //  put them in a vecotr called seta
-	  // get the ones without iseeatstrip
-	  //get their strip ids
-  //put them in a vecotr
-
-
-//       static ofstream outfile("debug.txt");
+//     static ofstream outfile("debug.txt");
 //     for (unsigned s=0; s<3; s++) {
 //         for (unsigned int h=0; h<m_hit[s].size(); h++) {
 //             outfile << s << "\t"
@@ -589,10 +374,63 @@ void RPCDataAnalysis::analyseHits(void) {
 //         }
 //     }
 
+//////////////////////
+// HIT TIME AND TOT //
+//////////////////////
 
+    for (unsigned int s=0; s<3; s++) {
+        for (unsigned int h=0; h<m_hit[s].size(); h++) {
+            if (m_hit[s][h]->isEtaStrip()) {
+                h_hit_time_eta[s]->Fill(m_hit[s][h]->getHitTime(), 1.0);
+                h_hit_ToT_eta[s]->Fill(m_hit[s][h]->getTimeOverThreshold(),
+                                                                        1.0);
+            } else {
+                h_hit_time_phi[s]->Fill(m_hit[s][h]->getHitTime(), 1.0);
+                h_hit_ToT_phi[s]->Fill(m_hit[s][h]->getTimeOverThreshold(),
+                                                                        1.0);
+            }
+        }
+    }
 
+//////////////////
+// CLUSTER SIZE //
+//////////////////
 
-	 
+    for (unsigned int s=0; s<3; s++) {
+        vector<unsigned int> strip[2];
+        for (unsigned int h=0; h<m_hit[s].size(); h++) {
+            if (m_hit[s][h]->isEtaStrip() &&
+                m_hit[s][h]->getHitTime()>m_t_min_eta[s] &&
+                m_hit[s][h]->getHitTime()<m_t_max_eta[s]) {
+                strip[m_hit[s][h]->isEtaStrip()].push_back(
+                                                m_hit[s][h]->getStripID());
+            }
+            if (!m_hit[s][h]->isEtaStrip() &&
+                m_hit[s][h]->getHitTime()>m_t_min_phi[s] &&
+                m_hit[s][h]->getHitTime()<m_t_max_phi[s]) {
+                strip[m_hit[s][h]->isEtaStrip()].push_back(
+                                                m_hit[s][h]->getStripID());
+            }
+        }
+        sort(strip[0].begin(), strip[0].end());
+        sort(strip[1].begin(), strip[1].end());
+        unsigned int size[2] = { 1, 1 };
+        for (unsigned int k=0; k<2; k++) {
+        for (unsigned int h=1; h<strip[k].size(); h++) {
+            if (strip[k][h]==strip[k][h-1]) {
+                size[k]++;
+            } else {
+                if (k==1) {
+                    h_cluster_size_eta[s]->Fill(size[1], 1.0);
+                } else {
+                    h_cluster_size_phi[s]->Fill(size[0], 1.0);
+                }
+                size[k] = 1;
+            }
+        }
+        }
+    }
 
+    return;
 
-
+}
