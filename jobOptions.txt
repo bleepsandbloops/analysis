@@ -1,0 +1,20 @@
+Time window for muon hits
+-------------------------
+
+#t_min_s0_eta   390
+#t_max_s0_eta   450
+
+#t_min_s0_phi   390
+#t_max_s0_phi   450
+
+#t_min_s1_eta   390
+#t_max_s1_eta   450
+
+#t_min_s1_phi   390
+#t_max_s1_phi   445
+
+#t_min_s2_eta   390
+#t_max_s2_eta   450
+
+#t_min_s2_phi   390
+#t_max_s2_phi   450

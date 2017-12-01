@@ -1,0 +1,130 @@
+Top RPC singlet
+===============
+
+eta strips
+----------
+
+#RPC_layer  2   #strip_type eta #strip_number   0   #TDC_channel    0
+#RPC_layer  2   #strip_type eta #strip_number   1   #TDC_channel    1
+#RPC_layer  2   #strip_type eta #strip_number   2   #TDC_channel    2
+#RPC_layer  2   #strip_type eta #strip_number   3   #TDC_channel    3
+#RPC_layer  2   #strip_type eta #strip_number   4   #TDC_channel    4
+#RPC_layer  2   #strip_type eta #strip_number   5   #TDC_channel    5
+#RPC_layer  2   #strip_type eta #strip_number   6   #TDC_channel    6
+#RPC_layer  2   #strip_type eta #strip_number   7   #TDC_channel    7
+#RPC_layer  2   #strip_type eta #strip_number   8   #TDC_channel    8
+#RPC_layer  2   #strip_type eta #strip_number   9   #TDC_channel    9
+#RPC_layer  2   #strip_type eta #strip_number  10   #TDC_channel   10
+#RPC_layer  2   #strip_type eta #strip_number  11   #TDC_channel   11
+#RPC_layer  2   #strip_type eta #strip_number  12   #TDC_channel   12
+#RPC_layer  2   #strip_type eta #strip_number  13   #TDC_channel   13
+#RPC_layer  2   #strip_type eta #strip_number  14   #TDC_channel   14
+#RPC_layer  2   #strip_type eta #strip_number  15   #TDC_channel   15
+
+phi strips
+----------
+
+#RPC_layer  2   #strip_type phi #strip_number   0   #TDC_channel   16
+#RPC_layer  2   #strip_type phi #strip_number   1   #TDC_channel   17
+#RPC_layer  2   #strip_type phi #strip_number   2   #TDC_channel   18
+#RPC_layer  2   #strip_type phi #strip_number   3   #TDC_channel   19
+#RPC_layer  2   #strip_type phi #strip_number   4   #TDC_channel   20
+#RPC_layer  2   #strip_type phi #strip_number   5   #TDC_channel   21
+#RPC_layer  2   #strip_type phi #strip_number   6   #TDC_channel   22
+#RPC_layer  2   #strip_type phi #strip_number   7   #TDC_channel   23
+#RPC_layer  2   #strip_type phi #strip_number   8   #TDC_channel   24
+#RPC_layer  2   #strip_type phi #strip_number   9   #TDC_channel   25
+#RPC_layer  2   #strip_type phi #strip_number  10   #TDC_channel   26
+#RPC_layer  2   #strip_type phi #strip_number  11   #TDC_channel   27
+#RPC_layer  2   #strip_type phi #strip_number  12   #TDC_channel   28
+#RPC_layer  2   #strip_type phi #strip_number  13   #TDC_channel   29
+#RPC_layer  2   #strip_type phi #strip_number  14   #TDC_channel   30
+#RPC_layer  2   #strip_type phi #strip_number  15   #TDC_channel   31
+
+
+Middle RPC singlet
+==================
+
+eta strips
+----------
+
+#RPC_layer  1   #strip_type eta #strip_number   0   #TDC_channel   32
+#RPC_layer  1   #strip_type eta #strip_number   1   #TDC_channel   33
+#RPC_layer  1   #strip_type eta #strip_number   2   #TDC_channel   34
+#RPC_layer  1   #strip_type eta #strip_number   3   #TDC_channel   35
+#RPC_layer  1   #strip_type eta #strip_number   4   #TDC_channel   36
+#RPC_layer  1   #strip_type eta #strip_number   5   #TDC_channel   37
+#RPC_layer  1   #strip_type eta #strip_number   6   #TDC_channel   38
+#RPC_layer  1   #strip_type eta #strip_number   7   #TDC_channel   39
+#RPC_layer  1   #strip_type eta #strip_number   8   #TDC_channel   40
+#RPC_layer  1   #strip_type eta #strip_number   9   #TDC_channel   41
+#RPC_layer  1   #strip_type eta #strip_number  10   #TDC_channel   42
+#RPC_layer  1   #strip_type eta #strip_number  11   #TDC_channel   43
+#RPC_layer  1   #strip_type eta #strip_number  12   #TDC_channel   44
+#RPC_layer  1   #strip_type eta #strip_number  13   #TDC_channel   45
+#RPC_layer  1   #strip_type eta #strip_number  14   #TDC_channel   46
+#RPC_layer  1   #strip_type eta #strip_number  15   #TDC_channel   47
+
+phi strips
+----------
+
+#RPC_layer  1   #strip_type phi #strip_number   0   #TDC_channel   48
+#RPC_layer  1   #strip_type phi #strip_number   1   #TDC_channel   49
+#RPC_layer  1   #strip_type phi #strip_number   2   #TDC_channel   50
+#RPC_layer  1   #strip_type phi #strip_number   3   #TDC_channel   51
+#RPC_layer  1   #strip_type phi #strip_number   4   #TDC_channel   52
+#RPC_layer  1   #strip_type phi #strip_number   5   #TDC_channel   53
+#RPC_layer  1   #strip_type phi #strip_number   6   #TDC_channel   54
+#RPC_layer  1   #strip_type phi #strip_number   7   #TDC_channel   55
+#RPC_layer  1   #strip_type phi #strip_number   8   #TDC_channel   56
+#RPC_layer  1   #strip_type phi #strip_number   9   #TDC_channel   57
+#RPC_layer  1   #strip_type phi #strip_number  10   #TDC_channel   58
+#RPC_layer  1   #strip_type phi #strip_number  11   #TDC_channel   59
+#RPC_layer  1   #strip_type phi #strip_number  12   #TDC_channel   60
+#RPC_layer  1   #strip_type phi #strip_number  13   #TDC_channel   61
+#RPC_layer  1   #strip_type phi #strip_number  14   #TDC_channel   62
+#RPC_layer  1   #strip_type phi #strip_number  15   #TDC_channel   63
+
+
+Bottom RPC singlet
+==================
+
+eta strips
+----------
+
+#RPC_layer  0   #strip_type eta #strip_number   0   #TDC_channel   64
+#RPC_layer  0   #strip_type eta #strip_number   1   #TDC_channel   65
+#RPC_layer  0   #strip_type eta #strip_number   2   #TDC_channel   66
+#RPC_layer  0   #strip_type eta #strip_number   3   #TDC_channel   67
+#RPC_layer  0   #strip_type eta #strip_number   4   #TDC_channel   68
+#RPC_layer  0   #strip_type eta #strip_number   5   #TDC_channel   69
+#RPC_layer  0   #strip_type eta #strip_number   6   #TDC_channel   70
+#RPC_layer  0   #strip_type eta #strip_number   7   #TDC_channel   71
+#RPC_layer  0   #strip_type eta #strip_number   8   #TDC_channel   72
+#RPC_layer  0   #strip_type eta #strip_number   9   #TDC_channel   73
+#RPC_layer  0   #strip_type eta #strip_number  10   #TDC_channel   74
+#RPC_layer  0   #strip_type eta #strip_number  11   #TDC_channel   75
+#RPC_layer  0   #strip_type eta #strip_number  12   #TDC_channel   76
+#RPC_layer  0   #strip_type eta #strip_number  13   #TDC_channel   77
+#RPC_layer  0   #strip_type eta #strip_number  14   #TDC_channel   78
+#RPC_layer  0   #strip_type eta #strip_number  15   #TDC_channel   79
+
+phi strips
+----------
+
+#RPC_layer  0   #strip_type phi #strip_number   0   #TDC_channel   80
+#RPC_layer  0   #strip_type phi #strip_number   1   #TDC_channel   81
+#RPC_layer  0   #strip_type phi #strip_number   2   #TDC_channel   82
+#RPC_layer  0   #strip_type phi #strip_number   3   #TDC_channel   83
+#RPC_layer  0   #strip_type phi #strip_number   4   #TDC_channel   84
+#RPC_layer  0   #strip_type phi #strip_number   5   #TDC_channel   85
+#RPC_layer  0   #strip_type phi #strip_number   6   #TDC_channel   86
+#RPC_layer  0   #strip_type phi #strip_number   7   #TDC_channel   87
+#RPC_layer  0   #strip_type phi #strip_number   8   #TDC_channel   88
+#RPC_layer  0   #strip_type phi #strip_number   9   #TDC_channel   89
+#RPC_layer  0   #strip_type phi #strip_number  10   #TDC_channel   90
+#RPC_layer  0   #strip_type phi #strip_number  11   #TDC_channel   91
+#RPC_layer  0   #strip_type phi #strip_number  12   #TDC_channel   92
+#RPC_layer  0   #strip_type phi #strip_number  13   #TDC_channel   93
+#RPC_layer  0   #strip_type phi #strip_number  14   #TDC_channel   94
+#RPC_layer  0   #strip_type phi #strip_number  15   #TDC_channel   95
